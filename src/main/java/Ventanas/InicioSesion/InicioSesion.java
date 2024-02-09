@@ -4,6 +4,7 @@
  */
 package Ventanas.InicioSesion;
 
+import Admin.agregarVuelos;
 import Clases.Usuario;
 import Ventanas.Errores.CredencialesIncorrectas;
 import Ventanas.Errores.contraseniasDiferentes;
@@ -354,6 +355,7 @@ public class InicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_pnl_barra_salirMousePressed
 
     private void lbl_btn_AccederMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_AccederMouseClicked
+
         try {
 
             Connection nuevaConexion = DriverManager.getConnection(
@@ -379,7 +381,7 @@ public class InicioSesion extends javax.swing.JFrame {
                 Usuario userFinal = new Usuario();
                 userFinal = encontrarUser();
 
-                VentanaPrincipal abrirVentanaPrincipal = new VentanaPrincipal(userFinal,null,null);
+                VentanaPrincipal abrirVentanaPrincipal = new VentanaPrincipal(userFinal, null, null);
                 abrirVentanaPrincipal.setVisible(true);
 
                 this.dispose();
@@ -395,7 +397,9 @@ public class InicioSesion extends javax.swing.JFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Credenciales incorrectas, intente nuevamente");
+
         }
+
     }//GEN-LAST:event_lbl_btn_AccederMouseClicked
 
     private void lbl_btn_Registrarse_IniciarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_Registrarse_IniciarSesionMouseEntered
