@@ -51,7 +51,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private Reserva reserva;
     DefaultTableModel modeloVuelos = new DefaultTableModel();
 
-    public VentanaPrincipal(Usuario user, Vuelos vuelo,Reserva reserva) {
+    public VentanaPrincipal(Usuario user, Vuelos vuelo, Reserva reserva) {
 
         initComponents();
         this.setLocationRelativeTo(null);
@@ -98,8 +98,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     public void elegirVuelo() {
-        
-        
 
         Double precio = null;
         int total = 0;
@@ -115,7 +113,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         vuelo.setAerolinea(tbl_vuelos.getValueAt(tbl_vuelos.getSelectedRow(), 3).toString());
         vuelo.setHoraSalida(tbl_vuelos.getValueAt(tbl_vuelos.getSelectedRow(), 4).toString());
         vuelo.setHoraLlegada(tbl_vuelos.getValueAt(tbl_vuelos.getSelectedRow(), 5).toString());
-        
 
         try {
             Connection nuevaConexion = DriverManager.getConnection(
@@ -132,8 +129,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             nuevoStatementPreparado.setString(2, vuelo.getDestino());
             nuevoStatementPreparado.setString(3, vuelo.getFechaSalida());
             nuevoStatementPreparado.setString(4, vuelo.getHoraSalida());
-            
-            System.out.println(vuelo.getFechaSalida());
 
             ResultSet Select_vuelo = nuevoStatementPreparado.executeQuery();
 
@@ -169,9 +164,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lbl_duracion.setText(vuelo.getDuracion());
         lbl_precio.setText("$ " + vuelo.getPrecioBoleto());
         lbl_asientosdisponibles.setText(vuelo.getTotalasientos() + "");
-        
-        
-       
 
     }
 
@@ -183,16 +175,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public void llenarOrigenyDestino() {
 
         ObtenerOrigenyDestino obtenerVuelos = new ObtenerOrigenyDestino();
-        ArrayList<String> listaVuelos = obtenerVuelos.getOrigenyDestino();
+        ArrayList<String> listaOrigenyDestino = obtenerVuelos.getOrigenyDestino();
 
         cbx_origen.removeAllItems();
         cbx_destino.removeAllItems();
 
-        for (String listaVuelo : listaVuelos) {
-            cbx_origen.addItem(listaVuelo);
-            cbx_destino.addItem(listaVuelo);
+        for (int i = 0; i < listaOrigenyDestino.size(); i += 2) {
+            String origen = listaOrigenyDestino.get(i);
+            String destino = listaOrigenyDestino.get(i + 1);
+            cbx_origen.addItem(origen);
+            cbx_destino.addItem(destino);
         }
-
     }
 
     public void limpiarVuelos() {
@@ -606,7 +599,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lbl_btn_miPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_miPerfilMouseClicked
-        MiPerfil abrirMiPerfil = new MiPerfil(user,reserva);
+        MiPerfil abrirMiPerfil = new MiPerfil(user, reserva);
         abrirMiPerfil.setVisible(true);
     }//GEN-LAST:event_lbl_btn_miPerfilMouseClicked
 
@@ -666,6 +659,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         try {
             buscarVuelos();
+
         } catch (noResultadoExcepcion ex) {
 
         }
@@ -685,13 +679,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
 
-        
         if (lbl_aerolinea.getText().equals("")) {
             SeleccioneUnVuelo n = new SeleccioneUnVuelo();
             n.setVisible(true);
         } else {
             this.setVisible(false);
-            Reservar r = new Reservar(user, vuelo,null);
+            Reservar r = new Reservar(user, vuelo, null);
             r.setVisible(true);
         }
 
@@ -728,27 +721,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 ResultSet vuelosDisponibles = nuevoStatementPreparado.executeQuery();
 
                 int cantidadVuelos = 0;
-                if (vuelosDisponibles.next()) {
-                    while (vuelosDisponibles.next()) {
+                while (vuelosDisponibles.next()) {
+                    Object vuelos[] = new Object[6];
+                    vuelos[0] = vuelosDisponibles.getString("origen");
+                    vuelos[1] = vuelosDisponibles.getString("destino");
+                    vuelos[2] = vuelosDisponibles.getString("fechasalida");
+                    vuelos[3] = vuelosDisponibles.getString("aerolinea");
+                    vuelos[4] = vuelosDisponibles.getString("horasalida");
+                    vuelos[5] = vuelosDisponibles.getString("horallegada");
 
-                        Object vuelos[] = new Object[6];
+                    modeloVuelos.addRow(vuelos);
+                    cantidadVuelos += 1;
+                }
 
-                        vuelos[0] = vuelosDisponibles.getString("origen");
-                        vuelos[1] = vuelosDisponibles.getString("destino");
-                        vuelos[2] = vuelosDisponibles.getString("fechasalida");
-                        vuelos[3] = vuelosDisponibles.getString("aerolinea");
-                        vuelos[4] = vuelosDisponibles.getString("horasalida");
-                        vuelos[5] = vuelosDisponibles.getString("horallegada");
-
-                        modeloVuelos.addRow(vuelos);
-
-                        cantidadVuelos += 1;
-
-                    }
-
-                    lbl_cantidaddevuelos.setText("Cantidad de vuelos encontrados : " + cantidadVuelos);
-                } else {
+                if (cantidadVuelos == 0) {
                     throw new noResultadoExcepcion();
+                } else {
+                    lbl_cantidaddevuelos.setText("Cantidad de vuelos encontrados: " + cantidadVuelos);
                 }
 
             } catch (SQLException ex) {
@@ -787,7 +776,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaPrincipal(null, null,null).setVisible(true);
+                new VentanaPrincipal(null, null, null).setVisible(true);
             }
         });
     }

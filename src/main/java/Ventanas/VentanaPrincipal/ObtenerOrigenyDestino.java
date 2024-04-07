@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Ventanas.VentanaPrincipal;
-
 
 import Clases.Vuelos;
 import java.sql.Connection;
@@ -34,23 +29,17 @@ public class ObtenerOrigenyDestino {
                     "root",
                     "Fide123.");
 
-            String Select_vuelos = "SELECT DISTINCT origen FROM vuelos";
+            String Select_vuelos = "SELECT DISTINCT origen, destino FROM vuelos";
 
             PreparedStatement nuevoStatementPreparado = nuevaConexion.prepareStatement(Select_vuelos);
-            
-            ResultSet resultado = nuevoStatementPreparado.executeQuery(Select_vuelos);
-            
 
+            ResultSet resultado = nuevoStatementPreparado.executeQuery();
 
             while (resultado.next()) {
-               
-                
                 String origen = resultado.getString("origen");
-                
-
-
+                String destino = resultado.getString("destino");
                 listaOrigenyDestino.add(origen);
-
+                listaOrigenyDestino.add(destino);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ObtenerOrigenyDestino.class.getName()).log(Level.SEVERE, null, ex);

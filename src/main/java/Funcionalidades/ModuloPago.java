@@ -310,7 +310,9 @@ public class ModuloPago extends javax.swing.JFrame {
 
     private void lbl_btn_pagarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_pagarMouseClicked
         reserva.setEstado(true);
-        vuelo.setTotalasientos(150-reserva.getCantAsientos());
+        
+        
+        vuelo.setTotalasientos(vuelo.getTotalasientos()-reserva.getCantAsientos());
         try {
             Connection nuevaConexion = DriverManager.getConnection(
                     "jdbc:mysql://localhost/fideairlines?serverTimezone=UTC",
