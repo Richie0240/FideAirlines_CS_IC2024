@@ -45,14 +45,18 @@ public class agregarVuelos extends javax.swing.JFrame {
         pnl_barra_salida = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
-        jTextField11 = new javax.swing.JTextField();
+        txt_Origen = new javax.swing.JTextField();
+        txt_Asientos = new javax.swing.JTextField();
+        txt_Destino = new javax.swing.JTextField();
+        txt_Aerolinea = new javax.swing.JTextField();
+        txt_Precio = new javax.swing.JTextField();
+        lbl_duracion = new javax.swing.JLabel();
+        jcal_fechaSalida = new com.toedter.calendar.JDateChooser();
+        cbx_horaSalida = new javax.swing.JComboBox<>();
+        cbx_horaLlegada = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -137,35 +141,56 @@ public class agregarVuelos extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 250, 50));
 
-        jTextField2.setText("jTextField1");
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, 200, 35));
+        txt_Origen.setText("Origen");
+        jPanel1.add(txt_Origen, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, 430, 35));
 
-        jTextField4.setText("jTextField1");
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, 200, 35));
+        txt_Asientos.setText("Asientos");
+        jPanel1.add(txt_Asientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 200, 35));
 
-        jTextField5.setText("jTextField1");
-        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 200, 35));
+        txt_Destino.setText("Destino");
+        jPanel1.add(txt_Destino, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 430, 35));
 
-        jTextField6.setText("jTextField1");
-        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 200, 35));
+        txt_Aerolinea.setText("Aerolinea");
+        jPanel1.add(txt_Aerolinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 200, 35));
 
-        jTextField7.setText("jTextField1");
-        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 200, 35));
+        txt_Precio.setText("Precio");
+        jPanel1.add(txt_Precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 200, 35));
 
-        jTextField8.setText("jTextField1");
-        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 200, 200, 35));
+        lbl_duracion.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
+        lbl_duracion.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_duracion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_duracion.setText("00:00");
+        jPanel1.add(lbl_duracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 270, 70, -1));
+        jPanel1.add(jcal_fechaSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 140, 200, 35));
 
-        jTextField9.setText("jTextField1");
-        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 200, 35));
+        cbx_horaSalida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "12:00 am", "01:00 am", "02:00 am", "03:00 am", "04:00 am", "05:00 am", "06:00 am", "07:00 am", "08:00 am", "09:00 am", "10:00 am", "11:00 am", "12:00 pm", "01:00 pm", "02:00 pm", "03:00 pm", "04:00 pm", "05:00 pm", "06:00 pm", "07:00 pm", "08:00 pm", "09:00 pm", "10:00 pm", "11:00 pm" }));
+        jPanel1.add(cbx_horaSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 200, 90, 35));
 
-        jTextField11.setText("jTextField1");
-        jPanel1.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 200, 35));
+        cbx_horaLlegada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "12:00 am", "01:00 am", "02:00 am", "03:00 am", "04:00 am", "05:00 am", "06:00 am", "07:00 am", "08:00 am", "09:00 am", "10:00 am", "11:00 am", "12:00 pm", "01:00 pm", "02:00 pm", "03:00 pm", "04:00 pm", "05:00 pm", "06:00 pm", "07:00 pm", "08:00 pm", "09:00 pm", "10:00 pm", "11:00 pm" }));
+        jPanel1.add(cbx_horaLlegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 200, 90, 35));
+
+        jLabel3.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Hora Llegada");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 240, 70, -1));
+
+        jLabel4.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Duración:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 270, 70, -1));
+
+        jLabel5.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Hora Salida");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 240, 70, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,19 +269,23 @@ public class agregarVuelos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbx_horaLlegada;
+    private javax.swing.JComboBox<String> cbx_horaSalida;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private com.toedter.calendar.JDateChooser jcal_fechaSalida;
     private javax.swing.JLabel lbl_btn_salir;
+    private javax.swing.JLabel lbl_duracion;
     private javax.swing.JPanel pnl_barra_salida;
     private javax.swing.JPanel pnl_btn_salir;
+    private javax.swing.JTextField txt_Aerolinea;
+    private javax.swing.JTextField txt_Asientos;
+    private javax.swing.JTextField txt_Destino;
+    private javax.swing.JTextField txt_Origen;
+    private javax.swing.JTextField txt_Precio;
     // End of variables declaration//GEN-END:variables
 }
