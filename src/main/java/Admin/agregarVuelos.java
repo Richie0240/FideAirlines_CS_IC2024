@@ -5,6 +5,7 @@
 package Admin;
 
 import Clases.Vuelos;
+import Ventanas.Auxiliares.VueloAgregado;
 import Ventanas.InicioSesion.InicioSesion;
 import java.awt.Color;
 import java.sql.Connection;
@@ -33,11 +34,12 @@ public class agregarVuelos extends javax.swing.JFrame {
      * Creates new form agregarVuelos
      */
     int xmouse, ymouse;
-    String comida = "No", entretenimiento = "No";
+    String comida, entretenimiento;
 
     public agregarVuelos() {
         initComponents();
         this.setLocationRelativeTo(null);
+        restablecerCampos();
 
         cbx_HoraSalida.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -63,6 +65,8 @@ public class agregarVuelos extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (chbx_comida.isSelected()) {
                     comida = "Si";
+                } else {
+                    comida = "No";
                 }
             }
         });
@@ -71,6 +75,8 @@ public class agregarVuelos extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (chbx_entretenimiento.isSelected()) {
                     entretenimiento = "Si";
+                } else {
+                    entretenimiento = "No";
                 }
             }
         });
@@ -103,7 +109,7 @@ public class agregarVuelos extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        pnl_btn_agregarVuelo = new javax.swing.JPanel();
         lbl_btn_agregarVuelo = new javax.swing.JLabel();
         chbx_entretenimiento = new javax.swing.JCheckBox();
         chbx_comida = new javax.swing.JCheckBox();
@@ -191,19 +197,62 @@ public class agregarVuelos extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 250, 50));
 
+        txt_Origen.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
+        txt_Origen.setForeground(java.awt.Color.lightGray);
         txt_Origen.setText("Origen");
+        txt_Origen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_OrigenMouseClicked(evt);
+            }
+        });
+        txt_Origen.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_OrigenKeyPressed(evt);
+            }
+        });
         jPanel1.add(txt_Origen, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, 430, 35));
 
+        txt_Asientos.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
+        txt_Asientos.setForeground(java.awt.Color.lightGray);
         txt_Asientos.setText("Asientos");
+        txt_Asientos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_AsientosMouseClicked(evt);
+            }
+        });
         jPanel1.add(txt_Asientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 200, 35));
 
+        txt_Destino.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
+        txt_Destino.setForeground(java.awt.Color.lightGray);
         txt_Destino.setText("Destino");
+        txt_Destino.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_DestinoMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txt_DestinoMousePressed(evt);
+            }
+        });
         jPanel1.add(txt_Destino, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 430, 35));
 
+        txt_Aerolinea.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
+        txt_Aerolinea.setForeground(java.awt.Color.lightGray);
         txt_Aerolinea.setText("Aerolinea");
+        txt_Aerolinea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_AerolineaMouseClicked(evt);
+            }
+        });
         jPanel1.add(txt_Aerolinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 200, 35));
 
+        txt_Precio.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
+        txt_Precio.setForeground(java.awt.Color.lightGray);
         txt_Precio.setText("Precio");
+        txt_Precio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_PrecioMouseClicked(evt);
+            }
+        });
         jPanel1.add(txt_Precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 200, 35));
 
         lbl_duracion.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
@@ -213,9 +262,11 @@ public class agregarVuelos extends javax.swing.JFrame {
         jPanel1.add(lbl_duracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 270, 70, -1));
         jPanel1.add(jcal_fechaSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 140, 200, 35));
 
+        cbx_HoraSalida.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
         cbx_HoraSalida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00:00 am", "01:00 am", "02:00 am", "03:00 am", "04:00 am", "05:00 am", "06:00 am", "07:00 am", "08:00 am", "09:00 am", "10:00 am", "11:00 am", "12:00 pm", "01:00 pm", "02:00 pm", "03:00 pm", "04:00 pm", "05:00 pm", "06:00 pm", "07:00 pm", "08:00 pm", "09:00 pm", "10:00 pm", "11:00 pm" }));
         jPanel1.add(cbx_HoraSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 200, 90, 35));
 
+        cbx_HoraLlegada.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
         cbx_HoraLlegada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00:00 am", "01:00 am", "02:00 am", "03:00 am", "04:00 am", "05:00 am", "06:00 am", "07:00 am", "08:00 am", "09:00 am", "10:00 am", "11:00 am", "12:00 pm", "01:00 pm", "02:00 pm", "03:00 pm", "04:00 pm", "05:00 pm", "06:00 pm", "07:00 pm", "08:00 pm", "09:00 pm", "10:00 pm", "11:00 pm" }));
         jPanel1.add(cbx_HoraLlegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 200, 90, 35));
 
@@ -234,38 +285,46 @@ public class agregarVuelos extends javax.swing.JFrame {
         jLabel5.setText("Hora Salida");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 240, 70, -1));
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        pnl_btn_agregarVuelo.setBackground(new java.awt.Color(43, 51, 139));
 
-        lbl_btn_agregarVuelo.setFont(new java.awt.Font("Roboto Light", 0, 18)); // NOI18N
-        lbl_btn_agregarVuelo.setForeground(new java.awt.Color(43, 51, 139));
+        lbl_btn_agregarVuelo.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
+        lbl_btn_agregarVuelo.setForeground(new java.awt.Color(255, 255, 255));
         lbl_btn_agregarVuelo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_btn_agregarVuelo.setText("Agregar Vuelo");
         lbl_btn_agregarVuelo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lbl_btn_agregarVueloMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbl_btn_agregarVueloMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_btn_agregarVueloMouseExited(evt);
+            }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnl_btn_agregarVueloLayout = new javax.swing.GroupLayout(pnl_btn_agregarVuelo);
+        pnl_btn_agregarVuelo.setLayout(pnl_btn_agregarVueloLayout);
+        pnl_btn_agregarVueloLayout.setHorizontalGroup(
+            pnl_btn_agregarVueloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_btn_agregarVueloLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(lbl_btn_agregarVuelo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnl_btn_agregarVueloLayout.setVerticalGroup(
+            pnl_btn_agregarVueloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lbl_btn_agregarVuelo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 380, 200, 35));
+        jPanel1.add(pnl_btn_agregarVuelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 380, 200, 35));
 
+        chbx_entretenimiento.setBackground(new java.awt.Color(43, 51, 139));
         chbx_entretenimiento.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
         chbx_entretenimiento.setForeground(new java.awt.Color(255, 255, 255));
         chbx_entretenimiento.setText("Servicio de Entretenimiento");
         jPanel1.add(chbx_entretenimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 310, 180, -1));
 
+        chbx_comida.setBackground(new java.awt.Color(43, 51, 139));
         chbx_comida.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
         chbx_comida.setForeground(new java.awt.Color(255, 255, 255));
         chbx_comida.setText("Servicio de Comida");
@@ -284,10 +343,7 @@ public class agregarVuelos extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
         );
 
         pack();
@@ -340,7 +396,6 @@ public class agregarVuelos extends javax.swing.JFrame {
         vuelo.setHoraSalida(cbx_HoraSalida.getSelectedItem().toString());
         vuelo.setHoraLlegada(cbx_HoraLlegada.getSelectedItem().toString());
         vuelo.setDuracion(lbl_duracion.getText());
-
         vuelo.setServicioComida(comida);
         vuelo.setServicioEntretenimiento(entretenimiento);
 
@@ -380,14 +435,16 @@ public class agregarVuelos extends javax.swing.JFrame {
             nuevoPreparedStatement.setString(9, vuelo.getServicioComida());
             nuevoPreparedStatement.setString(10, vuelo.getServicioEntretenimiento());
             nuevoPreparedStatement.setString(11, vuelo.getTotalasientos() + "");
-            
+
             nuevoPreparedStatement.executeUpdate();
-            
+
             nuevaConexion.close();
             nuevoPreparedStatement.close();
-            
-            
 
+            VueloAgregado n = new VueloAgregado();
+            n.setVisible(true);
+
+            restablecerCampos();
         } catch (SQLException ex) {
             Logger.getLogger(agregarVuelos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -399,8 +456,175 @@ public class agregarVuelos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_chbx_comidaActionPerformed
 
+    private void lbl_btn_agregarVueloMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_agregarVueloMouseEntered
+        pnl_btn_agregarVuelo.setBackground(new Color(79, 93, 255));
+
+    }//GEN-LAST:event_lbl_btn_agregarVueloMouseEntered
+
+    private void lbl_btn_agregarVueloMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_agregarVueloMouseExited
+        pnl_btn_agregarVuelo.setBackground(new Color(43, 51, 139));
+    }//GEN-LAST:event_lbl_btn_agregarVueloMouseExited
+
+    private void txt_OrigenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_OrigenMouseClicked
+        if (txt_Origen.getText().equals("Origen")) {
+            txt_Origen.setText("");
+            txt_Origen.setForeground(Color.BLACK);
+        } else if (txt_Origen.getText().isEmpty()) {
+            txt_Origen.setText("Origen");
+            txt_Origen.setForeground(Color.LIGHT_GRAY);
+        }
+
+        if (txt_Destino.getText().isEmpty()) {
+            txt_Destino.setForeground(Color.LIGHT_GRAY);
+            txt_Destino.setText("Destino");
+        }
+
+        if (txt_Aerolinea.getText().isEmpty()) {
+            txt_Aerolinea.setForeground(Color.LIGHT_GRAY);
+            txt_Aerolinea.setText("Aerolinea");
+        }
+
+        if (txt_Asientos.getText().isEmpty()) {
+            txt_Asientos.setForeground(Color.LIGHT_GRAY);
+            txt_Asientos.setText("Asientos");
+        }
+
+        if (txt_Precio.getText().isEmpty()) {
+            txt_Precio.setForeground(Color.LIGHT_GRAY);
+            txt_Precio.setText("Precio");
+        }
+    }//GEN-LAST:event_txt_OrigenMouseClicked
+
+    private void txt_DestinoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_DestinoMousePressed
+
+    }//GEN-LAST:event_txt_DestinoMousePressed
+
+    private void txt_AerolineaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_AerolineaMouseClicked
+        if (txt_Aerolinea.getText().equals("Aerolinea")) {
+            txt_Aerolinea.setText("");
+            txt_Aerolinea.setForeground(Color.BLACK);
+        } else if (txt_Aerolinea.getText().isEmpty()) {
+            txt_Aerolinea.setText("Aerolinea");
+            txt_Aerolinea.setForeground(Color.LIGHT_GRAY);
+        }
+
+        if (txt_Origen.getText().isEmpty()) {
+            txt_Origen.setForeground(Color.LIGHT_GRAY);
+            txt_Origen.setText("Origen");
+        }
+
+        if (txt_Destino.getText().isEmpty()) {
+            txt_Destino.setForeground(Color.LIGHT_GRAY);
+            txt_Destino.setText("Destino");
+        }
+
+        if (txt_Asientos.getText().isEmpty()) {
+            txt_Asientos.setForeground(Color.LIGHT_GRAY);
+            txt_Asientos.setText("Asientos");
+        }
+
+        if (txt_Precio.getText().isEmpty()) {
+            txt_Precio.setForeground(Color.LIGHT_GRAY);
+            txt_Precio.setText("Precio");
+        }
+    }//GEN-LAST:event_txt_AerolineaMouseClicked
+
+    private void txt_DestinoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_DestinoMouseClicked
+        if (txt_Destino.getText().equals("Destino")) {
+            txt_Destino.setText("");
+            txt_Destino.setForeground(Color.BLACK);
+        } else if (txt_Destino.getText().isEmpty()) {
+            txt_Destino.setText("Destino");
+            txt_Destino.setForeground(Color.LIGHT_GRAY);
+        }
+
+        if (txt_Origen.getText().isEmpty()) {
+            txt_Origen.setForeground(Color.LIGHT_GRAY);
+            txt_Origen.setText("Origen");
+        }
+
+        if (txt_Aerolinea.getText().isEmpty()) {
+            txt_Aerolinea.setForeground(Color.LIGHT_GRAY);
+            txt_Aerolinea.setText("Aerolinea");
+        }
+
+        if (txt_Asientos.getText().isEmpty()) {
+            txt_Asientos.setForeground(Color.LIGHT_GRAY);
+            txt_Asientos.setText("Asientos");
+        }
+
+        if (txt_Precio.getText().isEmpty()) {
+            txt_Precio.setForeground(Color.LIGHT_GRAY);
+            txt_Precio.setText("Precio");
+        }
+    }//GEN-LAST:event_txt_DestinoMouseClicked
+
+    private void txt_AsientosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_AsientosMouseClicked
+        if (txt_Asientos.getText().equals("Asientos")) {
+            txt_Asientos.setText("");
+            txt_Asientos.setForeground(Color.BLACK);
+        } else if (txt_Asientos.getText().isEmpty()) {
+            txt_Asientos.setText("Asientos");
+            txt_Asientos.setForeground(Color.LIGHT_GRAY);
+        }
+
+        if (txt_Origen.getText().isEmpty()) {
+            txt_Origen.setForeground(Color.LIGHT_GRAY);
+            txt_Origen.setText("Origen");
+        }
+
+        if (txt_Destino.getText().isEmpty()) {
+            txt_Destino.setForeground(Color.LIGHT_GRAY);
+            txt_Destino.setText("Destino");
+        }
+
+        if (txt_Aerolinea.getText().isEmpty()) {
+            txt_Aerolinea.setForeground(Color.LIGHT_GRAY);
+            txt_Aerolinea.setText("Aerolinea");
+        }
+
+        if (txt_Precio.getText().isEmpty()) {
+            txt_Precio.setForeground(Color.LIGHT_GRAY);
+            txt_Precio.setText("Precio");
+        }
+    }//GEN-LAST:event_txt_AsientosMouseClicked
+
+    private void txt_PrecioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_PrecioMouseClicked
+        if (txt_Precio.getText().equals("Precio")) {
+            txt_Precio.setText("");
+            txt_Precio.setForeground(Color.BLACK);
+        } else if (txt_Precio.getText().isEmpty()) {
+            txt_Precio.setText("Precio");
+            txt_Precio.setForeground(Color.LIGHT_GRAY);
+        }
+
+        if (txt_Origen.getText().isEmpty()) {
+            txt_Origen.setForeground(Color.LIGHT_GRAY);
+            txt_Origen.setText("Origen");
+        }
+
+        if (txt_Destino.getText().isEmpty()) {
+            txt_Destino.setForeground(Color.LIGHT_GRAY);
+            txt_Destino.setText("Destino");
+        }
+
+        if (txt_Aerolinea.getText().isEmpty()) {
+            txt_Aerolinea.setForeground(Color.LIGHT_GRAY);
+            txt_Aerolinea.setText("Aerolinea");
+        }
+
+        if (txt_Asientos.getText().isEmpty()) {
+            txt_Asientos.setForeground(Color.LIGHT_GRAY);
+            txt_Asientos.setText("Asientos");
+        }
+    }//GEN-LAST:event_txt_PrecioMouseClicked
+
+    private void txt_OrigenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_OrigenKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_OrigenKeyPressed
+
     public double validarPrecio() {
-        // Pedir al usuario que ingrese un valor
+
         String precio = txt_Precio.getText();
         double valorNumerico = 0;
 
@@ -437,9 +661,11 @@ public class agregarVuelos extends javax.swing.JFrame {
 
     private int convertirA24Horas(String horaStr) {
 
-        String[] partesHora = horaStr.split(":");
-        int hora12h = Integer.parseInt(partesHora[0]);
-        String indicador = partesHora[1].trim();
+        String[] partes = horaStr.split(" ");
+        String[] horaMinuto = partes[0].split(":");
+
+        int hora12h = Integer.parseInt(horaMinuto[0]);
+        String indicador = partes[1].trim();
 
         int hora24h = (hora12h == 12 && indicador.equalsIgnoreCase("am")) ? 0 : hora12h;
         if (indicador.equalsIgnoreCase("pm") && hora12h != 12) {
@@ -447,6 +673,27 @@ public class agregarVuelos extends javax.swing.JFrame {
         }
 
         return hora24h;
+    }
+
+    public void restablecerCampos() {
+        txt_Aerolinea.setText("Aerolinea");
+        txt_Aerolinea.setForeground(Color.LIGHT_GRAY);
+        txt_Asientos.setText("Asientos");
+        txt_Asientos.setForeground(Color.LIGHT_GRAY);
+        txt_Destino.setText("Destino");
+        txt_Destino.setForeground(Color.LIGHT_GRAY);
+        txt_Origen.setText("Origen");
+        txt_Origen.setForeground(Color.LIGHT_GRAY);
+        txt_Precio.setText("Precio");
+        txt_Precio.setForeground(Color.LIGHT_GRAY);
+
+        jcal_fechaSalida.setDate(null);
+        cbx_HoraLlegada.setSelectedIndex(0);
+        cbx_HoraSalida.setSelectedIndex(0);
+
+        chbx_comida.setSelected(false);
+        chbx_entretenimiento.setSelected(false);
+
     }
 
     public static void main(String args[]) {
@@ -500,12 +747,12 @@ public class agregarVuelos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private com.toedter.calendar.JDateChooser jcal_fechaSalida;
     private javax.swing.JLabel lbl_btn_agregarVuelo;
     private javax.swing.JLabel lbl_btn_salir;
     private javax.swing.JLabel lbl_duracion;
     private javax.swing.JPanel pnl_barra_salida;
+    private javax.swing.JPanel pnl_btn_agregarVuelo;
     private javax.swing.JPanel pnl_btn_salir;
     private javax.swing.JTextField txt_Aerolinea;
     private javax.swing.JTextField txt_Asientos;

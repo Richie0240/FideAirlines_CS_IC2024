@@ -7,9 +7,12 @@ package Reservas;
 import Clases.Reserva;
 import Clases.Usuario;
 import Clases.Vuelos;
+
 import Funcionalidades.ModuloPago;
 import Ventanas.VentanaPrincipal.VentanaPrincipal;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -24,12 +27,15 @@ public class Reservar extends javax.swing.JFrame {
 
     private final Usuario user;
     private Reserva reserva;
-
-    Double total = 0.0;
-
+    double total;
+    double precioComida;
+    double precioEntretenimiento;
     private final Vuelos vuelo;
+    String porcentajeBoletos;
+    double precioBoletos;
+    double precioClase;
 
-    public Reservar(Usuario user, Vuelos vuelo,Reserva reserva) {
+    public Reservar(Usuario user, Vuelos vuelo, Reserva reserva) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.user = user;
@@ -47,12 +53,56 @@ public class Reservar extends javax.swing.JFrame {
         lbl_clasecosto.setText("");
         lbl_asientosdisponiblesreserva.setText("");
 
-        lbl_total.setText("");
-        lbl_comidaCosto.setText("");
-        lbl_entretenimientoCosto.setText("");
-        lbl_numBoletos.setText("");
+        lbl_total.setText("$ " + calcularTotal());
+        lbl_comidaCosto.setText("$ " + precioComida);
+        lbl_entretenimientoCosto.setText("$ " + precioEntretenimiento);
+        lbl_numBoletos.setText("$ " + vuelo.getPrecioBoleto() + " x " + cbx_cantboletos.getSelectedItem().toString() + " = $ " + precioBoletos);
 
         mostrarDetalles(vuelo);
+
+        chb_comida.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcularTotal();
+            }
+        });
+
+        chb_entretenimiento.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcularTotal();
+            }
+        });
+
+        cbx_cantboletos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcularTotal();
+            }
+        });
+
+        cbx_clases.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcularTotal();
+            }
+        });
+
+        chb_comida.addActionListener((java.awt.event.ActionEvent evt) -> {
+            if (chb_comida.isSelected()) {
+                precioComida = 25;
+            } else {
+                precioComida = 0;
+            }
+        });
+
+        chb_entretenimiento.addActionListener((java.awt.event.ActionEvent evt) -> {
+            if (chb_entretenimiento.isSelected()) {
+                precioEntretenimiento = 50;
+            } else {
+                precioEntretenimiento = 0;
+            }
+        });
 
     }
 
@@ -101,8 +151,6 @@ public class Reservar extends javax.swing.JFrame {
         chb_comida = new javax.swing.JCheckBox();
         chb_entretenimiento = new javax.swing.JCheckBox();
         cbx_clases = new javax.swing.JComboBox<>();
-        pnl_btn_calcular = new javax.swing.JPanel();
-        lbl_btn_calcular = new javax.swing.JLabel();
         pnl_barra_salir = new javax.swing.JPanel();
         pnl_btn_salir = new javax.swing.JPanel();
         lbl_btn_SALIR = new javax.swing.JLabel();
@@ -227,7 +275,7 @@ public class Reservar extends javax.swing.JFrame {
         jLabel1.setBounds(0, 0, 790, 37);
 
         cbx_cantboletos.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
-        cbx_cantboletos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
+        cbx_cantboletos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
         cbx_cantboletos.setBorder(null);
         jPanel2.add(cbx_cantboletos);
         cbx_cantboletos.setBounds(640, 200, 60, 19);
@@ -244,6 +292,11 @@ public class Reservar extends javax.swing.JFrame {
 
         chb_comida.setFont(new java.awt.Font("Roboto Light", 1, 12)); // NOI18N
         chb_comida.setText("Servicio de comida  + $25");
+        chb_comida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chb_comidaActionPerformed(evt);
+            }
+        });
         jPanel2.add(chb_comida);
         chb_comida.setBounds(490, 290, 190, 19);
 
@@ -258,42 +311,10 @@ public class Reservar extends javax.swing.JFrame {
         chb_entretenimiento.setBounds(490, 310, 240, 19);
 
         cbx_clases.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
-        cbx_clases.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clase economica", "Clase Business", "Primera Clase" }));
+        cbx_clases.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clase economica +0% por boleto", "Clase Business + 50% por boleto", "Primera Clase + 100% por boleto" }));
         cbx_clases.setBorder(null);
         jPanel2.add(cbx_clases);
         cbx_clases.setBounds(490, 250, 160, 19);
-
-        pnl_btn_calcular.setBackground(new java.awt.Color(43, 51, 139));
-
-        lbl_btn_calcular.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
-        lbl_btn_calcular.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_btn_calcular.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_btn_calcular.setText("Calcular");
-        lbl_btn_calcular.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl_btn_calcularMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lbl_btn_calcularMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lbl_btn_calcularMouseExited(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnl_btn_calcularLayout = new javax.swing.GroupLayout(pnl_btn_calcular);
-        pnl_btn_calcular.setLayout(pnl_btn_calcularLayout);
-        pnl_btn_calcularLayout.setHorizontalGroup(
-            pnl_btn_calcularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_btn_calcular, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-        );
-        pnl_btn_calcularLayout.setVerticalGroup(
-            pnl_btn_calcularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_btn_calcular, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-        );
-
-        jPanel2.add(pnl_btn_calcular);
-        pnl_btn_calcular.setBounds(660, 350, 110, 30);
 
         pnl_barra_salir.setBackground(new java.awt.Color(43, 51, 139));
         pnl_barra_salir.setForeground(new java.awt.Color(43, 51, 139));
@@ -378,17 +399,21 @@ public class Reservar extends javax.swing.JFrame {
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
         jPanel3.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 290, 20));
 
+        lbl_total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_total.setText("jLabel8");
-        jPanel3.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, -1, -1));
+        jPanel3.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 180, -1, -1));
 
+        lbl_entretenimientoCosto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_entretenimientoCosto.setText("jLabel9");
-        jPanel3.add(lbl_entretenimientoCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, -1, -1));
+        jPanel3.add(lbl_entretenimientoCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, -1, -1));
 
+        lbl_comidaCosto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_comidaCosto.setText("jLabel11");
-        jPanel3.add(lbl_comidaCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, -1, -1));
+        jPanel3.add(lbl_comidaCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 120, -1, -1));
 
+        lbl_numBoletos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_numBoletos.setText("jLabel12");
-        jPanel3.add(lbl_numBoletos, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, -1, -1));
+        jPanel3.add(lbl_numBoletos, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 160, -1));
 
         pnl_btn_Reservar.setBackground(new java.awt.Color(43, 51, 139));
 
@@ -424,8 +449,9 @@ public class Reservar extends javax.swing.JFrame {
         jLabel9.setText("Clase elegida:");
         jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
 
+        lbl_clasecosto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_clasecosto.setText("jLabel11");
-        jPanel3.add(lbl_clasecosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, -1, -1));
+        jPanel3.add(lbl_clasecosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 160, -1));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -500,46 +526,6 @@ public class Reservar extends javax.swing.JFrame {
         ymouse = evt.getY();
     }//GEN-LAST:event_pnl_barra_salirMousePressed
 
-    private void lbl_btn_calcularMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_calcularMouseClicked
-
-        Double comidaCosto = 25.0;
-        if (!chb_comida.isSelected()) {
-            comidaCosto = 0.0;
-        }
-
-        Double entretenimientocosto = 50.0;
-
-        if (!chb_entretenimiento.isSelected()) {
-            entretenimientocosto = 0.0;
-        }
-        Double costoxasiento = vuelo.getPrecioBoleto();
-        Double costoAsientos = 0.0;
-
-        Double ecocosto = 0.0;
-        Double busicosto = 40.0;
-        Double primecosto = 100.0;
-        Double clase = 0.0;
-
-        costoAsientos = costoxasiento * Integer.valueOf(cbx_cantboletos.getSelectedItem().toString());
-
-        if (cbx_clases.getSelectedItem().toString().equals("Clase economica")) {
-            clase = ecocosto;
-        } else if (cbx_clases.getSelectedItem().toString().equals("Clase Business")) {
-            clase = busicosto;
-        } else {
-            clase = primecosto;
-        }
-
-        total = costoAsientos + comidaCosto + entretenimientocosto + clase;
-
-        lbl_comidaCosto.setText("$ " + comidaCosto);
-        lbl_entretenimientoCosto.setText("$ " + entretenimientocosto);
-        lbl_numBoletos.setText(cbx_cantboletos.getSelectedItem().toString());
-        lbl_clasecosto.setText("$ " + clase);
-        lbl_total.setText("$ " + total);
-
-    }//GEN-LAST:event_lbl_btn_calcularMouseClicked
-
     private void chb_entretenimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chb_entretenimientoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chb_entretenimientoActionPerformed
@@ -553,9 +539,7 @@ public class Reservar extends javax.swing.JFrame {
         r.setFechaVuelo(vuelo.getFechaSalida());
 
         r.setCantAsientos(Integer.parseInt(cbx_cantboletos.getSelectedItem().toString()));
-        
-        
-        
+
         String codasiento = "";
         for (int i = 1; i <= r.getCantAsientos(); i++) {
             String codigoAsiento = generarCodigoAsiento();
@@ -567,12 +551,48 @@ public class Reservar extends javax.swing.JFrame {
         }
         r.setAsiento(codasiento);
 
-        ModuloPago p = new ModuloPago(user, vuelo, r, total);
+        ModuloPago p = new ModuloPago(user, vuelo, r, calcularTotal());
         p.setVisible(true);
         this.dispose();
 
 
     }//GEN-LAST:event_lbl_btn_ReservarMouseClicked
+
+    public double claseVuelo() {
+        double precioClase = 0;
+
+        if (cbx_clases.getSelectedItem().toString().equals("Clase economica +0% por boleto")) {
+            precioClase = 0.0;
+        } else if (cbx_clases.getSelectedItem().toString().equals("Clase Business + 50% por boleto")) {
+            precioClase = 1.50;
+        } else if (cbx_clases.getSelectedItem().toString().equals("Primera Clase + 100% por boleto")) {
+            precioClase = 2.0;
+        }
+
+        return precioClase;
+    }
+
+    public double calcularTotal() {
+
+        if (claseVuelo() == 0.0) {
+            porcentajeBoletos = "0%";
+        } else if (claseVuelo() == 1.50) {
+            porcentajeBoletos = "50%";
+        } else {
+            porcentajeBoletos = "100%";
+        }
+
+        precioBoletos = (Integer.valueOf(cbx_cantboletos.getSelectedItem().toString()) * vuelo.getPrecioBoleto());
+        precioClase = (claseVuelo() * vuelo.getPrecioBoleto()) * Integer.parseInt(cbx_cantboletos.getSelectedItem().toString());
+        lbl_numBoletos.setText("$ " + vuelo.getPrecioBoleto() + " x " + cbx_cantboletos.getSelectedItem().toString() + " = $ " + precioBoletos);
+        lbl_clasecosto.setText("$ " + precioBoletos + " + " + porcentajeBoletos + " = $" + precioClase);//+ Integer.valueOf(cbx_cantboletos.getSelectedItem().toString()) + " x " + (claseVuelo() * vuelo.getPrecioBoleto() + " = $ " + precioClase));
+        lbl_comidaCosto.setText("$ " + precioComida);
+        lbl_entretenimientoCosto.setText("$ " + precioEntretenimiento);
+
+        total = precioComida + precioEntretenimiento + precioBoletos + precioClase;
+        lbl_total.setText("$ " + total);
+        return total;
+    }
 
     private static String generarCodigoAsiento() {
         String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -581,17 +601,6 @@ public class Reservar extends javax.swing.JFrame {
         int numeroAleatorio = (int) (Math.random() * 1000) % 100;
         return letraAleatoria + String.format("%02d", numeroAleatorio);
     }
-
-    private void lbl_btn_calcularMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_calcularMouseEntered
-        // TODO add your handling code here:
-        pnl_btn_calcular.setBackground(new Color(79, 93, 255));
-    }//GEN-LAST:event_lbl_btn_calcularMouseEntered
-
-    private void lbl_btn_calcularMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_calcularMouseExited
-        // TODO add your handling code here:
-
-        pnl_btn_calcular.setBackground(new Color(43, 51, 139));
-    }//GEN-LAST:event_lbl_btn_calcularMouseExited
 
     private void lbl_btn_ReservarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_ReservarMouseEntered
         // TODO add your handling code here:
@@ -603,6 +612,10 @@ public class Reservar extends javax.swing.JFrame {
         // TODO add your handling code here:
         pnl_btn_Reservar.setBackground(new Color(43, 51, 139));
     }//GEN-LAST:event_lbl_btn_ReservarMouseExited
+
+    private void chb_comidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chb_comidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chb_comidaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -634,7 +647,7 @@ public class Reservar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Reservar(null, null,null).setVisible(true);
+                new Reservar(null, null, null).setVisible(true);
             }
         });
     }
@@ -669,7 +682,6 @@ public class Reservar extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_asientosdisponiblesreserva;
     private javax.swing.JLabel lbl_btn_Reservar;
     private javax.swing.JLabel lbl_btn_SALIR;
-    private javax.swing.JLabel lbl_btn_calcular;
     private javax.swing.JLabel lbl_clasecosto;
     private javax.swing.JLabel lbl_comidaCosto;
     private javax.swing.JLabel lbl_destinoreserva;
@@ -684,7 +696,6 @@ public class Reservar extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_total;
     private javax.swing.JPanel pnl_barra_salir;
     private javax.swing.JPanel pnl_btn_Reservar;
-    private javax.swing.JPanel pnl_btn_calcular;
     private javax.swing.JPanel pnl_btn_salir;
     // End of variables declaration//GEN-END:variables
 }

@@ -48,7 +48,7 @@ public class InicioSesion extends javax.swing.JFrame {
         background = new javax.swing.JPanel();
         pnl_Azul_IniciarSesion = new javax.swing.JPanel();
         lbl_Iniciar_Sesion = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
+        separador = new javax.swing.JSeparator();
         txf_correo_electronico_IniciarSesion = new javax.swing.JTextField();
         pf_contrasenia_IniciarSesion = new javax.swing.JPasswordField();
         pnl_btn_Acceder = new javax.swing.JPanel();
@@ -57,6 +57,7 @@ public class InicioSesion extends javax.swing.JFrame {
         pnl_btn_Registrarse_IniciarSesion = new javax.swing.JPanel();
         lbl_btn_Registrarse_IniciarSesion = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+        chbx_adminLogin = new javax.swing.JCheckBox();
         pnl_barra_salir = new javax.swing.JPanel();
         pnl_btn_salir = new javax.swing.JPanel();
         lbl_btn_SALIR = new javax.swing.JLabel();
@@ -80,8 +81,8 @@ public class InicioSesion extends javax.swing.JFrame {
         lbl_Iniciar_Sesion.setText("Iniciar Sesión");
         pnl_Azul_IniciarSesion.add(lbl_Iniciar_Sesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 76, 330, -1));
 
-        jSeparator1.setBackground(new java.awt.Color(255, 255, 255));
-        pnl_Azul_IniciarSesion.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 280, 30));
+        separador.setBackground(new java.awt.Color(255, 255, 255));
+        pnl_Azul_IniciarSesion.add(separador, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 280, 30));
 
         txf_correo_electronico_IniciarSesion.setBackground(new java.awt.Color(43, 51, 139));
         txf_correo_electronico_IniciarSesion.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
@@ -186,6 +187,12 @@ public class InicioSesion extends javax.swing.JFrame {
 
         jSeparator2.setBackground(new java.awt.Color(255, 255, 255));
         pnl_Azul_IniciarSesion.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 280, 20));
+
+        chbx_adminLogin.setBackground(new java.awt.Color(43, 51, 139));
+        chbx_adminLogin.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
+        chbx_adminLogin.setForeground(new java.awt.Color(255, 255, 255));
+        chbx_adminLogin.setText("Iniciar como Admin");
+        pnl_Azul_IniciarSesion.add(chbx_adminLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, -1, -1));
 
         background.add(pnl_Azul_IniciarSesion);
         pnl_Azul_IniciarSesion.setBounds(470, 0, 330, 500);
@@ -355,50 +362,95 @@ public class InicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_pnl_barra_salirMousePressed
 
     private void lbl_btn_AccederMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_AccederMouseClicked
+        if (chbx_adminLogin.isSelected()) {
+            try {
 
-        try {
+                Connection nuevaConexion = DriverManager.getConnection(
+                        "jdbc:mysql://localhost/fideairlines?serverTimezone=UTC",
+                        "root",
+                        "Fide123.");
 
-            Connection nuevaConexion = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/fideairlines?serverTimezone=UTC",
-                    "root",
-                    "Fide123.");
+                String consulta_inicio = "SELECT correoelectronico,password"
+                        + " FROM admins WHERE correoelectronico = ? AND password = ?";
 
-            String consulta_inicio = "SELECT correoelectronico,password"
-                    + " FROM usuarios WHERE correoelectronico = ? AND password = ?";
+                PreparedStatement nuevoStatementPreparado = nuevaConexion.prepareStatement(consulta_inicio);
 
-            PreparedStatement nuevoStatementPreparado = nuevaConexion.prepareStatement(consulta_inicio);
+                nuevoStatementPreparado.setString(1, txf_correo_electronico_IniciarSesion.getText());
 
-            nuevoStatementPreparado.setString(1, txf_correo_electronico_IniciarSesion.getText());
+                nuevoStatementPreparado.setString(2, String.copyValueOf(pf_contrasenia_IniciarSesion.getPassword()));
 
-            nuevoStatementPreparado.setString(2, String.copyValueOf(pf_contrasenia_IniciarSesion.getPassword()));
+                ResultSet resultado = nuevoStatementPreparado.executeQuery();
 
-            ResultSet resultado = nuevoStatementPreparado.executeQuery();
+                if (resultado.next()) {
 
-            if (resultado.next()) {
+                    
 
-                encontrarUser();
+                    Usuario userFinal = encontrarAdmin();
+                    
 
-                Usuario userFinal = new Usuario();
-                userFinal = encontrarUser();
+                    agregarVuelos n = new agregarVuelos();
+                    n.setVisible(true);
 
-                VentanaPrincipal abrirVentanaPrincipal = new VentanaPrincipal(userFinal, null, null);
-                abrirVentanaPrincipal.setVisible(true);
+                    this.dispose();
 
-                this.dispose();
+                } else {
+                    CredencialesIncorrectas n = new CredencialesIncorrectas();
+                    n.setVisible(true);
+                }
 
-            } else {
-                CredencialesIncorrectas n = new CredencialesIncorrectas();
-                n.setVisible(true);
+                nuevaConexion.close();
+                nuevoStatementPreparado.close();
+                resultado.close();
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Credenciales incorrectas, intente nuevamente");
+
             }
+        } else {
+            try {
 
-            nuevaConexion.close();
-            nuevoStatementPreparado.close();
-            resultado.close();
+                Connection nuevaConexion = DriverManager.getConnection(
+                        "jdbc:mysql://localhost/fideairlines?serverTimezone=UTC",
+                        "root",
+                        "Fide123.");
 
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Credenciales incorrectas, intente nuevamente");
+                String consulta_inicio = "SELECT correoelectronico,password"
+                        + " FROM usuarios WHERE correoelectronico = ? AND password = ?";
 
+                PreparedStatement nuevoStatementPreparado = nuevaConexion.prepareStatement(consulta_inicio);
+
+                nuevoStatementPreparado.setString(1, txf_correo_electronico_IniciarSesion.getText());
+
+                nuevoStatementPreparado.setString(2, String.copyValueOf(pf_contrasenia_IniciarSesion.getPassword()));
+
+                ResultSet resultado = nuevoStatementPreparado.executeQuery();
+
+                if (resultado.next()) {
+
+                   
+
+                    Usuario userFinal = encontrarUser();
+
+                    VentanaPrincipal abrirVentanaPrincipal = new VentanaPrincipal(userFinal, null, null);
+                    abrirVentanaPrincipal.setVisible(true);
+
+                    this.dispose();
+
+                } else {
+                    CredencialesIncorrectas n = new CredencialesIncorrectas();
+                    n.setVisible(true);
+                }
+
+                nuevaConexion.close();
+                nuevoStatementPreparado.close();
+                resultado.close();
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Credenciales incorrectas, intente nuevamente");
+
+            }
         }
+
 
     }//GEN-LAST:event_lbl_btn_AccederMouseClicked
 
@@ -471,6 +523,47 @@ public class InicioSesion extends javax.swing.JFrame {
         return userElegido;
     }
 
+    public Usuario encontrarAdmin() {
+
+        Usuario user = new Usuario();
+
+        try {
+            Connection nuevaConexion = DriverManager.getConnection(
+                    "jdbc:mysql://localhost/fideairlines?serverTimezone=UTC",
+                    "root",
+                    "Fide123.");
+
+            String consulta_user = "SELECT nombre,apellidos,correoelectronico,password"
+                    + " FROM admins WHERE correoelectronico = ?";
+
+            PreparedStatement nuevoStatementPreparado = nuevaConexion.prepareStatement(consulta_user);
+
+            nuevoStatementPreparado.setString(1, txf_correo_electronico_IniciarSesion.getText());
+
+            ResultSet resultado = nuevoStatementPreparado.executeQuery();
+
+            while (resultado.next()) {
+
+                user.setNombre(resultado.getString("nombre"));
+                user.setApellidos(resultado.getString("apellidos"));
+                user.setCorreoelectronico(resultado.getString("correoelectronico"));
+                user.setPassword(resultado.getString("password"));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Usuario userElegido = new Usuario();
+        userElegido.setNombre(user.getNombre());
+        userElegido.setApellidos(user.getApellidos());
+        userElegido.setCorreoelectronico(user.getCorreoelectronico());
+        userElegido.setPassword(user.getPassword());
+
+        return userElegido;
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -505,8 +598,8 @@ public class InicioSesion extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
+    private javax.swing.JCheckBox chbx_adminLogin;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lbl_Iniciar_Sesion;
     private javax.swing.JLabel lbl_btn_Acceder;
@@ -520,6 +613,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JPanel pnl_btn_Acceder;
     private javax.swing.JPanel pnl_btn_Registrarse_IniciarSesion;
     private javax.swing.JPanel pnl_btn_salir;
+    private javax.swing.JSeparator separador;
     private javax.swing.JTextField txf_correo_electronico_IniciarSesion;
     // End of variables declaration//GEN-END:variables
 }
