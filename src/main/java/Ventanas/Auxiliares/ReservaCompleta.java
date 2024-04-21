@@ -20,19 +20,22 @@ public class ReservaCompleta extends javax.swing.JFrame {
      * Creates new form RegistroCompleto
      */
     int xmouse, ymouse;
-    
+
     private Usuario user;
     private Vuelos vuelo;
     private Reserva reserva;
-    
 
-    public ReservaCompleta(Usuario user, Vuelos vuelo,Reserva reserva) {
+    public ReservaCompleta(Usuario user, Vuelos vuelo, Reserva reserva) {
         initComponents();
         this.user = user;
         this.vuelo = vuelo;
         this.reserva = reserva;
         this.setLocationRelativeTo(null);
- 
+        Hilo_ReservaCompleta n = new Hilo_ReservaCompleta(this, user, vuelo, reserva);
+        n.start();
+
+        VentanaPrincipal p = new VentanaPrincipal(user, vuelo, reserva);
+
     }
 
     /**
@@ -140,10 +143,10 @@ public class ReservaCompleta extends javax.swing.JFrame {
     private void lbl_btn_salirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_salirMouseClicked
         // TODO add your handling code here:
         this.dispose();
-        
-        VentanaPrincipal p = new VentanaPrincipal(user, vuelo,reserva);
+
+        VentanaPrincipal p = new VentanaPrincipal(user, vuelo, reserva);
         p.setVisible(true);
-        
+
     }//GEN-LAST:event_lbl_btn_salirMouseClicked
 
     private void lbl_btn_salirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_salirMouseEntered
@@ -204,7 +207,7 @@ public class ReservaCompleta extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ReservaCompleta(null,null,null).setVisible(true);
+                new ReservaCompleta(null, null, null).setVisible(true);
             }
         });
     }

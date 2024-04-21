@@ -31,7 +31,7 @@ public class Reservar extends javax.swing.JFrame {
     double precioComida;
     double precioEntretenimiento;
     private final Vuelos vuelo;
-    String porcentajeBoletos;
+
     double precioBoletos;
     double precioClase;
 
@@ -290,6 +290,7 @@ public class Reservar extends javax.swing.JFrame {
         jPanel2.add(jLabel7);
         jLabel7.setBounds(720, 206, 50, 10);
 
+        chb_comida.setBackground(new java.awt.Color(255, 255, 255));
         chb_comida.setFont(new java.awt.Font("Roboto Light", 1, 12)); // NOI18N
         chb_comida.setText("Servicio de comida  + $25");
         chb_comida.addActionListener(new java.awt.event.ActionListener() {
@@ -300,6 +301,7 @@ public class Reservar extends javax.swing.JFrame {
         jPanel2.add(chb_comida);
         chb_comida.setBounds(490, 290, 190, 19);
 
+        chb_entretenimiento.setBackground(new java.awt.Color(255, 255, 255));
         chb_entretenimiento.setFont(new java.awt.Font("Roboto Light", 1, 12)); // NOI18N
         chb_entretenimiento.setText("Servicio de entretenimiento  + $50");
         chb_entretenimiento.addActionListener(new java.awt.event.ActionListener() {
@@ -574,22 +576,20 @@ public class Reservar extends javax.swing.JFrame {
 
     public double calcularTotal() {
 
-        if (claseVuelo() == 0.0) {
-            porcentajeBoletos = "0%";
-        } else if (claseVuelo() == 1.50) {
-            porcentajeBoletos = "50%";
-        } else {
-            porcentajeBoletos = "100%";
-        }
-
         precioBoletos = (Integer.valueOf(cbx_cantboletos.getSelectedItem().toString()) * vuelo.getPrecioBoleto());
-        precioClase = (claseVuelo() * vuelo.getPrecioBoleto()) * Integer.parseInt(cbx_cantboletos.getSelectedItem().toString());
+        precioClase = (claseVuelo() * vuelo.getPrecioBoleto()) - vuelo.getPrecioBoleto(); //* Integer.parseInt(cbx_cantboletos.getSelectedItem().toString());
         lbl_numBoletos.setText("$ " + vuelo.getPrecioBoleto() + " x " + cbx_cantboletos.getSelectedItem().toString() + " = $ " + precioBoletos);
-        lbl_clasecosto.setText("$ " + precioBoletos + " + " + porcentajeBoletos + " = $" + precioClase);//+ Integer.valueOf(cbx_cantboletos.getSelectedItem().toString()) + " x " + (claseVuelo() * vuelo.getPrecioBoleto() + " = $ " + precioClase));
-        lbl_comidaCosto.setText("$ " + precioComida);
-        lbl_entretenimientoCosto.setText("$ " + precioEntretenimiento);
+        if (precioClase < 0) {
+            precioClase = 0;
+        }
+        lbl_clasecosto.setText(" + $" + precioClase + " /boleto");//+ Integer.valueOf(cbx_cantboletos.getSelectedItem().toString()) + " x " + (claseVuelo() * vuelo.getPrecioBoleto() + " = $ " + precioClase));
+        lbl_comidaCosto.setText("+ $ " + precioComida + " /boleto");
+        lbl_entretenimientoCosto.setText("+ $ " + precioEntretenimiento + " /boleto");
 
-        total = precioComida + precioEntretenimiento + precioBoletos + precioClase;
+        total
+                = (precioComida * Integer.parseInt(cbx_cantboletos.getSelectedItem().toString()))
+                + (precioEntretenimiento * Integer.parseInt(cbx_cantboletos.getSelectedItem().toString()))
+                + precioBoletos + (precioClase * Integer.parseInt(cbx_cantboletos.getSelectedItem().toString()));
         lbl_total.setText("$ " + total);
         return total;
     }

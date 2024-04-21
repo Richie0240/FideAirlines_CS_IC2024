@@ -40,7 +40,8 @@ public class ModuloPago extends javax.swing.JFrame {
         this.reserva = reserva;
         this.costo = costo;
         this.setLocationRelativeTo(null);
-        lbl_costo.setText(costo + "");
+        lbl_userName.setText(user.getNombre());
+        lbl_costo.setText("Pagar $ " + costo);
 
     }
 
@@ -62,10 +63,9 @@ public class ModuloPago extends javax.swing.JFrame {
         pnl_btn_cancelar = new javax.swing.JPanel();
         lbl_volvel = new javax.swing.JLabel();
         pnl_btn_Pagar = new javax.swing.JPanel();
-        lbl_btn_pagar = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         lbl_costo = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lbl_userName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -131,7 +131,7 @@ public class ModuloPago extends javax.swing.JFrame {
             pnl_barra_salir15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_barra_salir15Layout.createSequentialGroup()
                 .addComponent(pnl_btn_salir15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 470, Short.MAX_VALUE))
         );
         pnl_barra_salir15Layout.setVerticalGroup(
             pnl_barra_salir15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,16 +140,18 @@ public class ModuloPago extends javax.swing.JFrame {
                 .addComponent(pnl_btn_salir15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(600, 300));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Roboto Light", 0, 24)); // NOI18N
-        jLabel1.setText("Confirmar reserva");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 192, 57));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("¿Deseas confirmar tu reserva?");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 400, 50));
 
         pnl_btn_cancelar.setBackground(new java.awt.Color(43, 51, 139));
 
-        lbl_volvel.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
+        lbl_volvel.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         lbl_volvel.setForeground(new java.awt.Color(255, 255, 255));
         lbl_volvel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_volvel.setText("Volver");
@@ -169,30 +171,30 @@ public class ModuloPago extends javax.swing.JFrame {
         pnl_btn_cancelar.setLayout(pnl_btn_cancelarLayout);
         pnl_btn_cancelarLayout.setHorizontalGroup(
             pnl_btn_cancelarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_volvel, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+            .addComponent(lbl_volvel, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
         );
         pnl_btn_cancelarLayout.setVerticalGroup(
             pnl_btn_cancelarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lbl_volvel, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        jPanel2.add(pnl_btn_cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(321, 237, -1, -1));
+        jPanel2.add(pnl_btn_cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 360, 250, -1));
 
         pnl_btn_Pagar.setBackground(new java.awt.Color(43, 51, 139));
 
-        lbl_btn_pagar.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
-        lbl_btn_pagar.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_btn_pagar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_btn_pagar.setText("Pagar");
-        lbl_btn_pagar.addMouseListener(new java.awt.event.MouseAdapter() {
+        lbl_costo.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        lbl_costo.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_costo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_costo.setText("precio");
+        lbl_costo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl_btn_pagarMouseClicked(evt);
+                lbl_costoMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lbl_btn_pagarMouseEntered(evt);
+                lbl_costoMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                lbl_btn_pagarMouseExited(evt);
+                lbl_costoMouseExited(evt);
             }
         });
 
@@ -200,46 +202,43 @@ public class ModuloPago extends javax.swing.JFrame {
         pnl_btn_Pagar.setLayout(pnl_btn_PagarLayout);
         pnl_btn_PagarLayout.setHorizontalGroup(
             pnl_btn_PagarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_btn_pagar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+            .addComponent(lbl_costo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
         );
         pnl_btn_PagarLayout.setVerticalGroup(
             pnl_btn_PagarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_btn_pagar, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+            .addComponent(lbl_costo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jPanel2.add(pnl_btn_Pagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(451, 237, -1, 35));
+        jPanel2.add(pnl_btn_Pagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 250, 35));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/tarjeta200.png"))); // NOI18N
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, -1, -1));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
-        jLabel3.setText("Costo: ");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, -1, -1));
-
-        lbl_costo.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
-        lbl_costo.setText("jLabel4");
-        jPanel2.add(lbl_costo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, -1, -1));
+        lbl_userName.setFont(new java.awt.Font("Roboto Light", 0, 24)); // NOI18N
+        lbl_userName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_userName.setText("FirstName");
+        jPanel2.add(lbl_userName, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 50));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
             .addComponent(pnl_barra_salir15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(pnl_barra_salir15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(52, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 500));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -297,22 +296,10 @@ public class ModuloPago extends javax.swing.JFrame {
         r.setVisible(true);
     }//GEN-LAST:event_lbl_volvelMouseClicked
 
-    private void lbl_btn_pagarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_pagarMouseEntered
-        // TODO add your handling code here:
-        pnl_btn_Pagar.setBackground(new Color(79, 93, 255));
-    }//GEN-LAST:event_lbl_btn_pagarMouseEntered
-
-    private void lbl_btn_pagarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_pagarMouseExited
-        // TODO add your handling code here:
-
-        pnl_btn_Pagar.setBackground(new Color(43, 51, 139));
-    }//GEN-LAST:event_lbl_btn_pagarMouseExited
-
-    private void lbl_btn_pagarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_pagarMouseClicked
+    private void lbl_costoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_costoMouseClicked
         reserva.setEstado(true);
-        
-        
-        vuelo.setTotalasientos(vuelo.getTotalasientos()-reserva.getCantAsientos());
+
+        vuelo.setTotalasientos(vuelo.getTotalasientos() - reserva.getCantAsientos());
         try {
             Connection nuevaConexion = DriverManager.getConnection(
                     "jdbc:mysql://localhost/fideairlines?serverTimezone=UTC",
@@ -322,41 +309,46 @@ public class ModuloPago extends javax.swing.JFrame {
             String Insert_Reserva = "INSERT INTO reserva(correo,origen,destino,fechasalida,asientos,estado)"
                     + "VALUES(?,?,?,?,?,?)";
             PreparedStatement nuevoStatementePreparado = nuevaConexion.prepareStatement(Insert_Reserva);
-            
+
             nuevoStatementePreparado.setString(1, user.getCorreoelectronico());
             nuevoStatementePreparado.setString(2, reserva.getOrigen());
             nuevoStatementePreparado.setString(3, reserva.getDestino());
             nuevoStatementePreparado.setString(4, reserva.getFechaVuelo());
             nuevoStatementePreparado.setString(5, reserva.getAsiento());
             nuevoStatementePreparado.setBoolean(6, reserva.getEstado());
-            
+
             nuevoStatementePreparado.execute();
-            
+
             String Updateasientos = "UPDATE vuelos SET asientos = ? WHERE origen = ? AND destino = ? AND fechasalida = ? AND horasalida = ?";
-            
-            
+
             PreparedStatement nuevoStatementUpdate = nuevaConexion.prepareStatement(Updateasientos);
-            
+
             nuevoStatementUpdate.setInt(1, vuelo.getTotalasientos());
-            
+
             nuevoStatementUpdate.setString(2, reserva.getOrigen());
             nuevoStatementUpdate.setString(3, reserva.getDestino());
             nuevoStatementUpdate.setString(4, vuelo.getFechaSalida());
             nuevoStatementUpdate.setString(5, vuelo.getHoraSalida());
-            
+
             nuevoStatementUpdate.executeUpdate();
-            
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ModuloPago.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
 
         ReservaCompleta rc = new ReservaCompleta(user, vuelo, reserva);
         rc.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_lbl_btn_pagarMouseClicked
+        
+    }//GEN-LAST:event_lbl_costoMouseClicked
+
+    private void lbl_costoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_costoMouseEntered
+        pnl_btn_Pagar.setBackground(new Color(79, 93, 255));
+    }//GEN-LAST:event_lbl_costoMouseEntered
+
+    private void lbl_costoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_costoMouseExited
+        pnl_btn_Pagar.setBackground(new Color(43, 51, 139));
+    }//GEN-LAST:event_lbl_costoMouseExited
 
     /**
      * @param args the command line arguments
@@ -396,12 +388,11 @@ public class ModuloPago extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbl_btn_SALIR15;
-    private javax.swing.JLabel lbl_btn_pagar;
     private javax.swing.JLabel lbl_costo;
+    private javax.swing.JLabel lbl_userName;
     private javax.swing.JLabel lbl_volvel;
     private javax.swing.JPanel pnl_barra_salir15;
     private javax.swing.JPanel pnl_btn_Pagar;

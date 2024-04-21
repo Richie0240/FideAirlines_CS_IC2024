@@ -4,9 +4,12 @@
  */
 package Ventanas.Auxiliares;
 
+import Clases.Reserva;
 import Clases.Usuario;
+import Clases.Vuelos;
 import Ventanas.InicioSesion.InicioSesion;
 import Ventanas.Registro.Registro;
+import Ventanas.VentanaPrincipal.VentanaPrincipal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -15,12 +18,20 @@ import javax.swing.JFrame;
  *
  * @author ricar
  */
-public class Hilo_RegistroCompleto extends Thread {
+public class Hilo_ReservaCompleta extends Thread {
 
     private JFrame ventanaAmostrar;
 
-    public Hilo_RegistroCompleto(JFrame ventanaAmostrar) {
+    private Usuario user;
+    private Vuelos vuelo;
+    private Reserva reserva;
+
+    public Hilo_ReservaCompleta(JFrame ventanaAmostrar, Usuario user, Vuelos vuelo, Reserva reserva) {
         this.ventanaAmostrar = ventanaAmostrar;
+        this.user = user;
+        this.vuelo = vuelo;
+        this.reserva = reserva;
+
     }
 
     public JFrame getVentanaAmostrar() {
@@ -36,17 +47,19 @@ public class Hilo_RegistroCompleto extends Thread {
 
         try {
             ventanaAmostrar.setVisible(true);
-            Hilo_RegistroCompleto.sleep(3000);
+            Hilo_ReservaCompleta.sleep(3000);
             ventanaAmostrar.dispose();
-            
-            Registro abrirRegistro = new Registro();
-            abrirRegistro.dispose();
 
-            InicioSesion abrirInicioSesion = new InicioSesion();
-            abrirInicioSesion.setVisible(true);
-            
+            VentanaPrincipal p = new VentanaPrincipal(user, vuelo, reserva);
+            p.setVisible(true);
+
+//            Registro abrirRegistro = new Registro();
+//            abrirRegistro.dispose();
+//
+//            InicioSesion abrirInicioSesion = new InicioSesion();
+//            abrirInicioSesion.setVisible(true);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Hilo_RegistroCompleto.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Hilo_ReservaCompleta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
