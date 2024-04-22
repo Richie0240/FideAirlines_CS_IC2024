@@ -227,7 +227,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pnl_barra_salir = new javax.swing.JPanel();
         pnl_btn_salir = new javax.swing.JPanel();
         lbl_btn_SALIR = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
+        pnl_btn_miperfil = new javax.swing.JPanel();
         lbl_btn_miPerfil = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_vuelos = new javax.swing.JTable();
@@ -429,7 +429,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel3.add(pnl_barra_salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1260, -1));
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        pnl_btn_miperfil.setBackground(new java.awt.Color(255, 255, 255));
 
         lbl_btn_miPerfil.setFont(new java.awt.Font("Roboto Light", 0, 18)); // NOI18N
         lbl_btn_miPerfil.setForeground(new java.awt.Color(43, 51, 139));
@@ -440,20 +440,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lbl_btn_miPerfilMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbl_btn_miPerfilMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_btn_miPerfilMouseExited(evt);
+            }
         });
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnl_btn_miperfilLayout = new javax.swing.GroupLayout(pnl_btn_miperfil);
+        pnl_btn_miperfil.setLayout(pnl_btn_miperfilLayout);
+        pnl_btn_miperfilLayout.setHorizontalGroup(
+            pnl_btn_miperfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lbl_btn_miPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnl_btn_miperfilLayout.setVerticalGroup(
+            pnl_btn_miperfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lbl_btn_miPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 30, -1, 50));
+        jPanel3.add(pnl_btn_miperfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 30, -1, 50));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1270, 200));
 
@@ -599,7 +605,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lbl_btn_miPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_miPerfilMouseClicked
-        MiPerfil abrirMiPerfil = new MiPerfil(user, reserva);
+        MiPerfil abrirMiPerfil = new MiPerfil(user, vuelo, reserva);
         abrirMiPerfil.setVisible(true);
     }//GEN-LAST:event_lbl_btn_miPerfilMouseClicked
 
@@ -690,6 +696,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jLabel9MouseClicked
+
+    private void lbl_btn_miPerfilMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_miPerfilMouseEntered
+        pnl_btn_miperfil.setBackground(new Color(79, 93, 255));
+        lbl_btn_miPerfil.setForeground(Color.WHITE);
+
+    }//GEN-LAST:event_lbl_btn_miPerfilMouseEntered
+
+    private void lbl_btn_miPerfilMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_miPerfilMouseExited
+        pnl_btn_miperfil.setBackground(Color.WHITE);
+        lbl_btn_miPerfil.setForeground(new Color(43, 51, 139));
+    }//GEN-LAST:event_lbl_btn_miPerfilMouseExited
 
     public void buscarVuelos() throws noResultadoExcepcion {
         limpiarVuelos();
@@ -806,7 +823,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JToggleButton jToggleButton1;
@@ -827,6 +843,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_precio;
     private javax.swing.JPanel pnl_barra_salir;
     private javax.swing.JPanel pnl_btn_buscarvuelos;
+    private javax.swing.JPanel pnl_btn_miperfil;
     private javax.swing.JPanel pnl_btn_reservar;
     private javax.swing.JPanel pnl_btn_salir;
     private javax.swing.JTable tbl_vuelos;

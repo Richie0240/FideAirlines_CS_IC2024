@@ -28,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Juanpa
+ * @author Richie
  */
 public class Historialreservas extends javax.swing.JFrame {
 
@@ -37,17 +37,21 @@ public class Historialreservas extends javax.swing.JFrame {
      */
     private Usuario user;
     private Reserva reserva;
+    private Vuelos vuelo;
+    
 
     int xmouse, ymouse;
 
     DefaultTableModel modeloHistorial = new DefaultTableModel();
 
-    public Historialreservas(Usuario user, Reserva reserva) {
+    public Historialreservas(Usuario user, Vuelos vuelo, Reserva reserva) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.user = user;
         this.reserva = reserva;
+        this.vuelo = vuelo;
 
+        modeloHistorial.addColumn("ID"); 
         modeloHistorial.addColumn("Origen");
         modeloHistorial.addColumn("Destino");
         modeloHistorial.addColumn("Fecha de vuelo");
@@ -55,6 +59,7 @@ public class Historialreservas extends javax.swing.JFrame {
         modeloHistorial.addColumn("Estado");
 
         refrescarTablas();
+        buscarReservas();
 
         tbl_historial.addMouseListener(new MouseAdapter() {
 
@@ -87,6 +92,10 @@ public class Historialreservas extends javax.swing.JFrame {
 
     public void refrescarTablas() {
         tbl_historial.setModel(modeloHistorial);
+        tbl_historial.getColumnModel().getColumn(0).setMinWidth(0);
+        tbl_historial.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbl_historial.getColumnModel().getColumn(0).setWidth(0);
+
     }
 
     /**
@@ -107,8 +116,6 @@ public class Historialreservas extends javax.swing.JFrame {
         pnl_barra_salir = new javax.swing.JPanel();
         pnl_btn_salir = new javax.swing.JPanel();
         lbl_btn_SALIR = new javax.swing.JLabel();
-        pnl_btn_actualizar = new javax.swing.JPanel();
-        lbl_btn_actualizar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -237,40 +244,6 @@ public class Historialreservas extends javax.swing.JFrame {
 
         jPanel2.add(pnl_barra_salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, -1));
 
-        pnl_btn_actualizar.setBackground(new java.awt.Color(43, 51, 139));
-
-        lbl_btn_actualizar.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
-        lbl_btn_actualizar.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_btn_actualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_btn_actualizar.setText("Actualizar Reservas");
-        lbl_btn_actualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lbl_btn_actualizar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl_btn_actualizarMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lbl_btn_actualizarMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lbl_btn_actualizarMouseExited(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnl_btn_actualizarLayout = new javax.swing.GroupLayout(pnl_btn_actualizar);
-        pnl_btn_actualizar.setLayout(pnl_btn_actualizarLayout);
-        pnl_btn_actualizarLayout.setHorizontalGroup(
-            pnl_btn_actualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_btn_actualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-        );
-        pnl_btn_actualizarLayout.setVerticalGroup(
-            pnl_btn_actualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_btn_actualizarLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lbl_btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jPanel2.add(pnl_btn_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 440, 150, 40));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -291,7 +264,7 @@ public class Historialreservas extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
 
-        MiPerfil n = new MiPerfil(user, reserva);
+        MiPerfil n = new MiPerfil(user, vuelo, reserva);
         n.setVisible(true);
     }//GEN-LAST:event_lbl_btn_SALIRMouseClicked
 
@@ -336,65 +309,36 @@ public class Historialreservas extends javax.swing.JFrame {
     private void lbl_btn_cancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_cancelarMouseClicked
 
         if (tbl_historial.getSelectedRow() != -1) {
-            String estado = (String) tbl_historial.getValueAt(tbl_historial.getSelectedRow(), 4);
-            boolean esActiva = estado.equalsIgnoreCase("Activa");
+            int selectedRow = tbl_historial.getSelectedRow();
 
-            if (esActiva) {
+            int idReserva = (Integer) modeloHistorial.getValueAt(selectedRow, 0);
 
-                String origen = (String) tbl_historial.getValueAt(tbl_historial.getSelectedRow(), 0);
-                String destino = (String) tbl_historial.getValueAt(tbl_historial.getSelectedRow(), 1);
-                String fechaSalida = (String) tbl_historial.getValueAt(tbl_historial.getSelectedRow(), 2);
+            try {
+                Connection nuevaConexion = DriverManager.getConnection(
+                        "jdbc:mysql://localhost/fideairlines?serverTimezone=UTC",
+                        "root",
+                        "Fide123.");
 
-                try {
-                    Connection nuevaConexion = DriverManager.getConnection(
-                            "jdbc:mysql://localhost/fideairlines?serverTimezone=UTC",
-                            "root",
-                            "Fide123.");
+                String UpdateReserva = "UPDATE reserva SET estado = ? WHERE idreserva = ?";
 
-                    String UpdateReserva = "UPDATE reserva SET estado = ? WHERE correo = ? AND origen = ? AND destino = ? AND fechasalida = ?";
+                PreparedStatement nuevoStatementPreparado = nuevaConexion.prepareStatement(UpdateReserva);
+                nuevoStatementPreparado.setBoolean(1, false);
+                nuevoStatementPreparado.setInt(2, idReserva);
 
-                    PreparedStatement nuevoStatementPreparado = nuevaConexion.prepareStatement(UpdateReserva);
+                nuevoStatementPreparado.executeUpdate();
 
-                    nuevoStatementPreparado.setBoolean(1, false);
-                    nuevoStatementPreparado.setString(2, user.getCorreoelectronico());
-                    nuevoStatementPreparado.setString(3, origen);
-                    nuevoStatementPreparado.setString(4, destino);
-                    nuevoStatementPreparado.setString(5, fechaSalida);
-
-                    nuevoStatementPreparado.executeUpdate();
-
-                    ReservacionCancelada n = new ReservacionCancelada();
-                    n.setVisible(true);
-
-                    buscarReservas();
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(Historialreservas.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-
-                ReservacionyaCancelada n = new ReservacionyaCancelada();
+                ReservacionCancelada n = new ReservacionCancelada(user, vuelo, reserva);
                 n.setVisible(true);
+
+                buscarReservas();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Historialreservas.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-
             System.out.println("No hay ninguna seleccionada");
         }
     }//GEN-LAST:event_lbl_btn_cancelarMouseClicked
-
-    private void lbl_btn_actualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_actualizarMouseClicked
-        buscarReservas();
-    }//GEN-LAST:event_lbl_btn_actualizarMouseClicked
-
-    private void lbl_btn_actualizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_actualizarMouseEntered
-
-        pnl_btn_actualizar.setBackground(new Color(79, 93, 255));
-    }//GEN-LAST:event_lbl_btn_actualizarMouseEntered
-
-    private void lbl_btn_actualizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_actualizarMouseExited
-        // TODO add your handling code here:
-        pnl_btn_actualizar.setBackground(new Color(43, 51, 139));
-    }//GEN-LAST:event_lbl_btn_actualizarMouseExited
 
     public void buscarReservas() {
         limpiarTabla();
@@ -405,8 +349,7 @@ public class Historialreservas extends javax.swing.JFrame {
                     "root",
                     "Fide123.");
 
-            String vSelect_reservas = "SELECT origen, destino, fechasalida, asientos,estado"
-                    + " FROM reserva WHERE correo = ? ";
+            String vSelect_reservas = "SELECT idreserva, origen, destino, fechasalida, asientos, estado FROM reserva WHERE correo = ?";
 
             PreparedStatement nuevoStatementPreparado = nuevaConexion.prepareStatement(vSelect_reservas);
 
@@ -415,20 +358,16 @@ public class Historialreservas extends javax.swing.JFrame {
             ResultSet Reservas = nuevoStatementPreparado.executeQuery();
 
             while (Reservas.next()) {
+                Object[] reserva = new Object[6]; // Cambia a 6 para incluir el ID
 
-                Object reserva[] = new Object[5];
-
-                reserva[0] = Reservas.getString("origen");
-                reserva[1] = Reservas.getString("destino");
-                reserva[2] = Reservas.getString("fechasalida");
-                reserva[3] = Reservas.getString("asientos");
-
-                boolean estado = Reservas.getBoolean("estado");
-
-                reserva[4] = estado ? "Activa" : "Inactiva";
+                reserva[0] = Reservas.getInt("idreserva"); // Almacenar el ID
+                reserva[1] = Reservas.getString("origen");
+                reserva[2] = Reservas.getString("destino");
+                reserva[3] = Reservas.getString("fechasalida");
+                reserva[4] = Reservas.getString("asientos");
+                reserva[5] = Reservas.getBoolean("estado") ? "Activa" : "Inactiva";
 
                 modeloHistorial.addRow(reserva);
-
             }
 
         } catch (SQLException ex) {
@@ -479,7 +418,7 @@ public class Historialreservas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Historialreservas(null, null).setVisible(true);
+                new Historialreservas(null, null, null).setVisible(true);
             }
         });
     }
@@ -489,10 +428,8 @@ public class Historialreservas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbl_btn_SALIR;
-    private javax.swing.JLabel lbl_btn_actualizar;
     private javax.swing.JLabel lbl_btn_cancelar;
     private javax.swing.JPanel pnl_barra_salir;
-    private javax.swing.JPanel pnl_btn_actualizar;
     private javax.swing.JPanel pnl_btn_cancelar;
     private javax.swing.JPanel pnl_btn_salir;
     private javax.swing.JTable tbl_historial;

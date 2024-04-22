@@ -8,6 +8,7 @@ import Clases.Reserva;
 import Clases.Usuario;
 import Clases.Vuelos;
 import Funcionalidades.PreferenciasUsuario;
+import MiPerfil.InformacionPersonal;
 import MiPerfil.MiPerfil;
 import Ventanas.InicioSesion.InicioSesion;
 import Ventanas.Registro.Registro;
@@ -20,7 +21,7 @@ import javax.swing.JFrame;
  *
  * @author ricar
  */
-public class Hilo_PreferenciasActualizadas extends Thread {
+public class Hilo_DatosActualizados extends Thread {
 
     private Usuario user;
     private Reserva reserva;
@@ -28,18 +29,20 @@ public class Hilo_PreferenciasActualizadas extends Thread {
 
     private JFrame ventanaAmostrar;
 
-    public Hilo_PreferenciasActualizadas(Usuario user, Vuelos vuelo, Reserva reserva) {
+    public Hilo_DatosActualizados(Usuario user, Vuelos vuelo, Reserva reserva) {
         this.user = user;
         this.reserva = reserva;
         this.vuelo = vuelo;
     }
 
-    public Hilo_PreferenciasActualizadas(Usuario user, JFrame ventanaAmostrar) {
+    public Hilo_DatosActualizados(JFrame ventanaAmostrar, Usuario user, Vuelos vuelo, Reserva reserva) {
         this.user = user;
+        this.reserva = reserva;
+        this.vuelo = vuelo;
         this.ventanaAmostrar = ventanaAmostrar;
     }
 
-    public Hilo_PreferenciasActualizadas(JFrame ventanaAmostrar) {
+    public Hilo_DatosActualizados(JFrame ventanaAmostrar) {
         this.ventanaAmostrar = ventanaAmostrar;
     }
 
@@ -56,17 +59,14 @@ public class Hilo_PreferenciasActualizadas extends Thread {
 
         try {
             ventanaAmostrar.setVisible(true);
-            Hilo_PreferenciasActualizadas.sleep(4000);
+            Hilo_DatosActualizados.sleep(4000);
             ventanaAmostrar.dispose();
 
-            PreferenciasUsuario abrirPreferenciasUsuario = new PreferenciasUsuario(user);
-            abrirPreferenciasUsuario.dispose();
-
-            MiPerfil abrirMiPerfil = new MiPerfil(user, vuelo, reserva);
-            abrirMiPerfil.setVisible(true);
+            InformacionPersonal info = new InformacionPersonal(user, vuelo, reserva);
+            info.setVisible(true);
 
         } catch (InterruptedException ex) {
-            Logger.getLogger(Hilo_PreferenciasActualizadas.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Hilo_DatosActualizados.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         VentanaPrincipal principal = new VentanaPrincipal(user, null, null);

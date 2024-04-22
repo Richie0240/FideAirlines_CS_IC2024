@@ -6,6 +6,7 @@ package MiPerfil;
 
 import Clases.Reserva;
 import Clases.Usuario;
+import Clases.Vuelos;
 import Funcionalidades.PreferenciasUsuario;
 import java.awt.Color;
 
@@ -18,17 +19,18 @@ public class InformacionPersonal extends javax.swing.JFrame {
     /**
      * Creates new form InformacionPersonal
      */
-    
-    private int xmouse,ymouse;
-    
+    private int xmouse, ymouse;
+
     private Usuario user;
     private Reserva reserva;
-    
-    public InformacionPersonal(Usuario user,Reserva reserva) {
+    private Vuelos vuelo;
+
+    public InformacionPersonal(Usuario user, Vuelos vuelo, Reserva reserva) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.user = user;
-        this.reserva= reserva;
+        this.reserva = reserva;
+        this.vuelo = vuelo;
         mostrarDatos();
     }
 
@@ -241,7 +243,7 @@ public class InformacionPersonal extends javax.swing.JFrame {
     private void lbl_btn_SALIRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_SALIRMouseClicked
         // TODO add your handling code here:
         this.dispose();
-        MiPerfil n = new MiPerfil(user,reserva);
+        MiPerfil n = new MiPerfil(user, vuelo, reserva);
         n.setVisible(true);
     }//GEN-LAST:event_lbl_btn_SALIRMouseClicked
 
@@ -275,22 +277,22 @@ public class InformacionPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_pnl_barra_salirMousePressed
 
     private void lbl_btn_editardatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_editardatosMouseClicked
-        Editar_datos n = new Editar_datos(user,reserva);
+        Editar_datos n = new Editar_datos(user, vuelo, reserva);
         n.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_lbl_btn_editardatosMouseClicked
 
     private void lbl_btn_editardatosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_editardatosMouseEntered
-       pnl_btn_editardatos.setBackground(new Color(79, 93, 255));
+        pnl_btn_editardatos.setBackground(new Color(79, 93, 255));
     }//GEN-LAST:event_lbl_btn_editardatosMouseEntered
 
     private void lbl_btn_editardatosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_editardatosMouseExited
-       
+
         pnl_btn_editardatos.setBackground(new Color(43, 51, 139));
     }//GEN-LAST:event_lbl_btn_editardatosMouseExited
 
     private void lbl_btn_editarpreferenciasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_editarpreferenciasMouseEntered
-       pnl_btn_editarpreferencias.setBackground(new Color(79, 93, 255));
+        pnl_btn_editarpreferencias.setBackground(new Color(79, 93, 255));
     }//GEN-LAST:event_lbl_btn_editarpreferenciasMouseEntered
 
     private void lbl_btn_editarpreferenciasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_editarpreferenciasMouseExited
@@ -298,7 +300,7 @@ public class InformacionPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_btn_editarpreferenciasMouseExited
 
     private void lbl_btn_editarpreferenciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_editarpreferenciasMouseClicked
-        
+
         PreferenciasUsuario n = new PreferenciasUsuario(user);
         n.setVisible(true);
         this.setVisible(false);
@@ -307,17 +309,17 @@ public class InformacionPersonal extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
-    public void mostrarDatos (){
-        lbl_nombreUsuario.setText("Nombre: "+user.getNombre());
-        lbl_ApellidosUsuario.setText("Apellidos: "+user.getApellidos());
-        lbl_edadUsuario.setText("Edad: "+user.getEdad());
-        lbl_correoUsuario.setText("Correo electronico: "+user.getCorreoelectronico());
-        lbl_aerolineaUsuario.setText("Aerolinea preferida: "+user.getAerolineaspreferidas());
-        lbl_claseUsuario.setText("Clase de vuelo preferida: "+user.getClasepreferida());
-        lbl_comidaUsuario.setText("Servicio de comida: "+user.getComida());
-        lbl_EntretenimientoUsuario.setText("Servicio de entretenimiento: "+user.getEntretenimiento());
+    public void mostrarDatos() {
+        lbl_nombreUsuario.setText("Nombre: " + user.getNombre());
+        lbl_ApellidosUsuario.setText("Apellidos: " + user.getApellidos());
+        lbl_edadUsuario.setText("Edad: " + user.getEdad());
+        lbl_correoUsuario.setText("Correo electronico: " + user.getCorreoelectronico());
+        lbl_aerolineaUsuario.setText("Aerolinea preferida: " + user.getAerolineaspreferidas());
+        lbl_claseUsuario.setText("Clase de vuelo preferida: " + user.getClasepreferida());
+        lbl_comidaUsuario.setText("Servicio de comida: " + user.getComida());
+        lbl_EntretenimientoUsuario.setText("Servicio de entretenimiento: " + user.getEntretenimiento());
     }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -345,7 +347,7 @@ public class InformacionPersonal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InformacionPersonal(null,null).setVisible(true);
+                new InformacionPersonal(null, null, null).setVisible(true);
             }
         });
     }

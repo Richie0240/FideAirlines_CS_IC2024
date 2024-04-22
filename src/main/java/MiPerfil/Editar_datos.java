@@ -7,6 +7,8 @@ package MiPerfil;
 import Clases.Reserva;
 import Ventanas.Registro.*;
 import Clases.Usuario;
+import Clases.Vuelos;
+import Ventanas.Auxiliares.DatosActualizados;
 import Ventanas.Auxiliares.Hilo_RegistroCompleto;
 import Ventanas.Auxiliares.RegistroCompleto;
 import Ventanas.Errores.ApellidosIncorrectos;
@@ -40,13 +42,22 @@ public class Editar_datos extends javax.swing.JFrame {
 
     private Usuario user;
     private Reserva reserva;
+    private Vuelos vuelo;
 
-    public Editar_datos(Usuario user,Reserva reserva) {
+    public Editar_datos(Usuario user, Vuelos vuelo, Reserva reserva) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.user = user;
-        this.reserva =reserva;
+        this.reserva = reserva;
+        this.vuelo = vuelo;
 
+        txf_nombre.setText(user.getNombre());
+        txf_nombre.setForeground(Color.BLACK);
+        txf_apellidos.setText(user.getApellidos());
+        txf_apellidos.setForeground(Color.BLACK);
+        txf_correo_electronico.setText(user.getCorreoelectronico());
+        txf_correo_electronico.setForeground(Color.BLACK);
+        cbx_Edad.setSelectedItem(user.getEdad());
     }
 
     /**
@@ -541,21 +552,23 @@ public class Editar_datos extends javax.swing.JFrame {
                                 nuevoStatementePreparado.setString(4, nuevoUsuario.getCorreoelectronico());
                                 nuevoStatementePreparado.setString(5, nuevoUsuario.getPassword());
                                 nuevoStatementePreparado.setString(6, anterior.getCorreoelectronico());
-                                
+
                                 nuevoStatementePreparado.executeUpdate();
-                                
 
                                 nuevaConexion.close();
                                 nuevoStatementePreparado.close();
-                                
+
                                 user.setNombre(nuevoUsuario.getNombre());
                                 user.setApellidos(nuevoUsuario.getApellidos());
                                 user.setEdad(nuevoUsuario.getEdad());
                                 user.setCorreoelectronico(nuevoUsuario.getCorreoelectronico());
                                 this.dispose();
                                 
-                                InformacionPersonal n = new InformacionPersonal(user,reserva);
+                                
+
+                                DatosActualizados n  = new DatosActualizados(user, vuelo, reserva);
                                 n.setVisible(true);
+                                
                             } catch (SQLException ex) {
                                 Logger.getLogger(Editar_datos.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -656,7 +669,7 @@ public class Editar_datos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Editar_datos(null,null).setVisible(true);
+                new Editar_datos(null, null, null).setVisible(true);
             }
         });
 

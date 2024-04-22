@@ -13,7 +13,7 @@ import java.awt.Color;
  *
  * @author ricar
  */
-public class ReservacionCancelada extends javax.swing.JFrame {
+public class DatosActualizados extends javax.swing.JFrame {
 
     /**
      * Creates new form RegistroCompleto
@@ -24,14 +24,14 @@ public class ReservacionCancelada extends javax.swing.JFrame {
     private Vuelos vuelo;
     private Reserva reserva;
 
-    public ReservacionCancelada(Usuario user, Vuelos vuelo, Reserva reserva) {
+    public DatosActualizados(Usuario user, Vuelos vuelo, Reserva reserva) {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.user = user;
         this.vuelo = vuelo;
         this.reserva = reserva;
-        this.setLocationRelativeTo(null);
-        Hilo_ReservaCancelada n = new Hilo_ReservaCancelada(this, user, vuelo, reserva);
-        n.start();
+        Hilo_DatosActualizados newhilo = new Hilo_DatosActualizados(this, user, vuelo, reserva);
+        newhilo.start();
 
     }
 
@@ -60,7 +60,7 @@ public class ReservacionCancelada extends javax.swing.JFrame {
 
         lbl_error.setFont(new java.awt.Font("Roboto Light", 0, 24)); // NOI18N
         lbl_error.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_error.setText("Reserva cancelada con exito");
+        lbl_error.setText("Sus datos personales han sido actualizados");
         jPanel1.add(lbl_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 520, 60));
 
         pnl_btn_salir.setBackground(new java.awt.Color(255, 255, 255));
@@ -186,21 +186,23 @@ public class ReservacionCancelada extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReservacionCancelada.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DatosActualizados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReservacionCancelada.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DatosActualizados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReservacionCancelada.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DatosActualizados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReservacionCancelada.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DatosActualizados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ReservacionCancelada(null, null, null).setVisible(true);
+                new DatosActualizados(null, null, null).setVisible(true);
             }
         });
     }

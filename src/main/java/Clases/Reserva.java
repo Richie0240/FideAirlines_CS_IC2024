@@ -10,6 +10,7 @@ package Clases;
  */
 public class Reserva {
 
+    private int id;
     private String origen;
     private String destino;
 
@@ -28,7 +29,8 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(String origen, String destino, String fechaVuelo, String asiento, Boolean estado, int cantAsientos, int totalasientos, String horasalida) {
+    public Reserva(int id, String origen, String destino, String fechaVuelo, String asiento, Boolean estado, int cantAsientos, int totalasientos, String horasalida) {
+        this.id = id;
         this.origen = origen;
         this.destino = destino;
         this.fechaVuelo = fechaVuelo;
@@ -37,6 +39,14 @@ public class Reserva {
         this.cantAsientos = cantAsientos;
         this.totalasientos = totalasientos;
         this.horasalida = horasalida;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getOrigen() {
@@ -105,7 +115,7 @@ public class Reserva {
 
     @Override
     public String toString() {
-        return "Reserva{" + "origen=" + origen + ", destino=" + destino + ", fechaVuelo=" + fechaVuelo + ", asiento=" + asiento + ", estado=" + estado + ", cantAsientos=" + cantAsientos + ", totalasientos=" + totalasientos + ", horasalida=" + horasalida + '}';
+        return "Reserva{" + "id=" + id + ", origen=" + origen + ", destino=" + destino + ", fechaVuelo=" + fechaVuelo + ", asiento=" + asiento + ", estado=" + estado + ", cantAsientos=" + cantAsientos + ", totalasientos=" + totalasientos + ", horasalida=" + horasalida + '}';
     }
 
 }

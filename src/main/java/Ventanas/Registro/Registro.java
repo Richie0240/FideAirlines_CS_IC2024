@@ -511,6 +511,14 @@ public class Registro extends javax.swing.JFrame {
 
                             nuevoUsuario.setPassword(String.valueOf(pf_confirmar_contrasenia.getPassword()));
 
+                            nuevoUsuario.setClasepreferida("No importa");
+
+                            nuevoUsuario.setAerolineaspreferidas("No importa");
+
+                            nuevoUsuario.setComida("No");
+
+                            nuevoUsuario.setEntretenimiento("No");
+
                             try {
 
                                 Connection nuevaConexion = DriverManager.getConnection(
@@ -536,21 +544,24 @@ public class Registro extends javax.swing.JFrame {
 
                                     try {
 
-                                        String Insert_user = "INSERT INTO usuarios(nombre,apellidos,edad,correoelectronico,password)"
-                                                + "VALUES(?,?,?,?,?)";
+                                        String Insert_user = "INSERT INTO usuarios(nombre,apellidos,edad,correoelectronico,password, aerolineaspreferidas, clasepreferida, comida, entretenimiento)"
+                                                + "VALUES(?,?,?,?,?,?,?,?,?)";
 
-                                        PreparedStatement nuevoStatementePreparado = nuevaConexion.prepareStatement(Insert_user);
+                                        nuevoStatementPreparado = nuevaConexion.prepareStatement(Insert_user);
 
-                                        nuevoStatementePreparado.setString(1, nuevoUsuario.getNombre());
-                                        nuevoStatementePreparado.setString(2, nuevoUsuario.getApellidos());
-                                        nuevoStatementePreparado.setString(3, nuevoUsuario.getEdad());
-                                        nuevoStatementePreparado.setString(4, nuevoUsuario.getCorreoelectronico());
-                                        nuevoStatementePreparado.setString(5, nuevoUsuario.getPassword());
-
-                                        nuevoStatementePreparado.executeUpdate();
+                                        nuevoStatementPreparado.setString(1, nuevoUsuario.getNombre());
+                                        nuevoStatementPreparado.setString(2, nuevoUsuario.getApellidos());
+                                        nuevoStatementPreparado.setString(3, nuevoUsuario.getEdad());
+                                        nuevoStatementPreparado.setString(4, nuevoUsuario.getCorreoelectronico());
+                                        nuevoStatementPreparado.setString(5, nuevoUsuario.getPassword());
+                                        nuevoStatementPreparado.setString(6, nuevoUsuario.getClasepreferida());
+                                        nuevoStatementPreparado.setString(7, nuevoUsuario.getAerolineaspreferidas());
+                                        nuevoStatementPreparado.setString(8, nuevoUsuario.getComida());
+                                        nuevoStatementPreparado.setString(9, nuevoUsuario.getEntretenimiento());
+                                        nuevoStatementPreparado.executeUpdate();
 
                                         nuevaConexion.close();
-                                        nuevoStatementePreparado.close();
+                                        nuevoStatementPreparado.close();
 
                                         RegistroCompleto abrirRegistroCompleto = new RegistroCompleto();
                                         abrirRegistroCompleto.setVisible(true);

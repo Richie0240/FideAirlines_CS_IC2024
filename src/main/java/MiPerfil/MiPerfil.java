@@ -6,6 +6,7 @@ package MiPerfil;
 
 import Clases.Reserva;
 import Clases.Usuario;
+import Clases.Vuelos;
 import Ventanas.VentanaPrincipal.VentanaPrincipal;
 import java.awt.Color;
 
@@ -19,13 +20,16 @@ public class MiPerfil extends javax.swing.JFrame {
 
     private Usuario user;
     private Reserva reserva;
+    private Vuelos vuelo;
 
-    public MiPerfil(Usuario user,Reserva reserva) {
+    public MiPerfil(Usuario user, Vuelos vuelo, Reserva reserva) {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
 
         this.user = user;
+
+        this.vuelo = vuelo;
 
         this.reserva = reserva;
     }
@@ -323,9 +327,9 @@ public class MiPerfil extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_btn_Informacion_personalMouseExited
 
     private void lbl_btn_misvuelosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_misvuelosMouseClicked
-       Historialreservas n = new Historialreservas(user, reserva);
-       n.setVisible(true);
-       this.dispose();
+        Historialreservas n = new Historialreservas(user, vuelo, reserva);
+        n.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_lbl_btn_misvuelosMouseClicked
 
     private void lbl_btn_misvuelosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_misvuelosMouseEntered
@@ -338,15 +342,15 @@ public class MiPerfil extends javax.swing.JFrame {
 
     private void lbl_btn_Informacion_personalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_Informacion_personalMouseClicked
         this.setVisible(false);
-        InformacionPersonal n = new InformacionPersonal(user,reserva);
+        InformacionPersonal n = new InformacionPersonal(user, vuelo, reserva);
         n.setVisible(true);
     }//GEN-LAST:event_lbl_btn_Informacion_personalMouseClicked
 
     private void lbl_btn_SALIRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_SALIRMouseClicked
         // TODO add your handling code here:
         this.dispose();
-        
-        VentanaPrincipal n = new VentanaPrincipal(user,null,reserva);
+
+        VentanaPrincipal n = new VentanaPrincipal(user, null, reserva);
 
     }//GEN-LAST:event_lbl_btn_SALIRMouseClicked
 
@@ -381,8 +385,8 @@ public class MiPerfil extends javax.swing.JFrame {
 
     private void lbl_btn_VolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_VolverMouseClicked
         this.dispose();
-        
-       // TODO add your handling code here:
+
+        // TODO add your handling code here:
     }//GEN-LAST:event_lbl_btn_VolverMouseClicked
 
     private void lbl_btn_VolverMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_btn_VolverMouseEntered
@@ -395,13 +399,13 @@ public class MiPerfil extends javax.swing.JFrame {
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
         // TODO add your handling code here:
-        
+
         pnl_btn_chat.setBackground(new Color(79, 93, 255));
     }//GEN-LAST:event_jLabel1MouseEntered
 
     private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
         // TODO add your handling code here:
-        
+
         pnl_btn_chat.setBackground(new Color(43, 51, 139));
     }//GEN-LAST:event_jLabel1MouseExited
 
@@ -451,7 +455,7 @@ public class MiPerfil extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MiPerfil(null,null).setVisible(true);
+                new MiPerfil(null, null, null).setVisible(true);
             }
         });
     }
